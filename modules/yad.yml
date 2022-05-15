@@ -1,0 +1,15 @@
+---
+name: yad
+config-opts:
+  - --disable-icon-browser
+  - --disable-tools
+  - --enable-standalone
+post-install:
+  - glib-compile-schemas ${FLATPAK_DEST}/share/glib-2.0/schemas
+sources:
+  - type: archive
+    url: https://github.com/v1cont/yad/releases/download/v10.1/yad-10.1.tar.xz
+    sha256: 742a5bd55de4b249eee6780bddeccb05c7ff4b158fd9743808f7d280219fd3ab
+
+modules:
+  - ../shared-modules/intltool/intltool-0.51.json

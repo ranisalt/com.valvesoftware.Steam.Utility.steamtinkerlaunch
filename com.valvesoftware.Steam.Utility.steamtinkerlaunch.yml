@@ -1,0 +1,51 @@
+---
+id: com.valvesoftware.Steam.Utility.steamtinkerlaunch
+default-branch: stable
+sdk: org.freedesktop.Sdk//21.08
+runtime: com.valvesoftware.Steam
+runtime-version: stable
+build-extension: true
+appstream-compose: false
+
+build-options:
+  prefix: /app/utils/steamtinkerlaunch
+  prepend-path: /app/utils/steamtinkerlaunch/bin
+  # strip: true
+
+cleanup:
+  - /include
+  - /man
+  - /share/aclocal
+  - /share/doc
+  - /share/man
+
+modules:
+  - name: stl
+    no-autogen: true
+    post-install:
+      - ln -s "${FLATPAK_DEST}/bin/steamtinkerlaunch" "${FLATPAK_DEST}/bin/stl" 
+      - stl yad "${FLATPAK_DEST}/bin/yad"
+    make-install-args:
+      - PREFIX=$(FLATPAK_DEST)
+    sources:
+      - type: archive
+        url: https://github.com/frostworx/steamtinkerlaunch/archive/v9.0.1.tar.gz
+        sha256: 0f2d91f78b3414cfdd2b5f1c0c9ccb8786ef039b35f928fcd83d4e6f88f53b32
+
+    modules:
+      - modules/git.yml
+      - modules/xdg-utils.yml
+      - modules/xdotool.yml
+      - modules/xprop.yml
+      - modules/xwininfo.yml
+      - modules/xxd.yml
+      - modules/yad.yml
+
+  - name: metadata
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 -t ${FLATPAK_DEST}/share/metainfo ${FLATPAK_ID}.metainfo.xml
+      - appstream-compose --basename=${FLATPAK_ID} --prefix=${FLATPAK_DEST} --origin=flatpak ${FLATPAK_ID}
+    sources:
+      - type: file
+        path: com.valvesoftware.Steam.Utility.steamtinkerlaunch.metainfo.xml

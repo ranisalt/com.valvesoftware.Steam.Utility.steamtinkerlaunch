@@ -1,0 +1,9 @@
+### Flatpak ###
+.flatpak-builder
+build
+build-dir
+repo
+
+### VisualStudioCode ###
+.vscode/
+*.code-workspace
